@@ -5,7 +5,7 @@
 #include "Linked_list.h"
 
 
-// All information about the file is stored in file structure, which is defined in Linked_list.h. 
+
 
 empre* criar_no_posse(int id_aluno, int id_livro, int qtd){
    
@@ -118,3 +118,4 @@ empre* remover_posse(empre *lista, int id_aluno, int id_livro, int qtd_devolvida
         current = temp; 
     }
     return NULL;
+}
