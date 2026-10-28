@@ -35,6 +35,7 @@ void listar_fila(fila* f);
 // Cancela uma reserva. 
 nofi* cancelar_reserva(fila *f); 
 
+
 // Apaga toda a fila de reserva. 
 void liberar_fila(fila *f); 
 

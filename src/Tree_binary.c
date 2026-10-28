@@ -3,11 +3,12 @@
 
 #include "Tree_binary.h"
 
+//Incializa a arvore binária. 
 book* criar_arvore() {
     return NULL;
 }
 
-
+// Reserva um espaço para o livro. 
 book* criar_no_livro(int id_livro, char* titulo, int qtd_total) {
     book* novo = (book*)malloc(sizeof(book)); 
     if (novo == NULL) {
@@ -31,6 +32,8 @@ book* criar_no_livro(int id_livro, char* titulo, int qtd_total) {
     return novo; 
 }
 
+
+// Isere os dados do livro.  
 book* inserir_livro(book* root, int id_livro, char* titulo, int qtd_total) {
     if (root == NULL) {
         return criar_no_livro(id_livro, titulo, qtd_total); 
@@ -47,7 +50,7 @@ book* inserir_livro(book* root, int id_livro, char* titulo, int qtd_total) {
     
     return root; 
 }
-
+// Procura por um livro cadastrado. 
 book* buscar_livro(book* root, int id_livro) {
     if (root == NULL || root->id_livro == id_livro) {
         return root;
@@ -59,13 +62,13 @@ book* buscar_livro(book* root, int id_livro) {
     
     return buscar_livro(root->right, id_livro);
 }
-
+// Verifica se há livro disponível para posse. 
 int consultar_disponivel(book* no) {
     if (no == NULL) return 0;
     return (no->qtd_total - no->qtd_empre);
 }
 
-
+// Mostra todo o acervo cadastrado da biblioteca. 
 void listar_acervo_em_ordem(book* root) {
     if (root != NULL) {
         listar_acervo_em_ordem(root->left);
@@ -78,6 +81,7 @@ void listar_acervo_em_ordem(book* root) {
     }
 }
 
+// É uma função auxiliar que não deve ser usada fora deste arquivo. 
 static book* encontrar_minimo(book* root) {
     book* atual = root;
     while (atual && atual->left != NULL) {
@@ -86,6 +90,7 @@ static book* encontrar_minimo(book* root) {
     return atual;
 }
 
+// Exclui um livro em específico.
 book* excluir_livro(book* root, int id_livro) {
     if (root == NULL) {
         return NULL; 
@@ -119,6 +124,7 @@ book* excluir_livro(book* root, int id_livro) {
     return root; 
 }
 
+// Apaga toda a arvore binária. 
 void liberar_arvore(book* root) {
     if (root != NULL) {
         liberar_arvore(root->left); 

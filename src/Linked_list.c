@@ -6,7 +6,7 @@
 
 
 
-
+// Cria um novo nó para mais uma posse de livro. 
 empre* criar_no_posse(int id_aluno, int id_livro, int qtd){
    
     empre* novo = (empre*)malloc(sizeof(empre)); 
@@ -23,7 +23,7 @@ empre* criar_no_posse(int id_aluno, int id_livro, int qtd){
     return novo; 
 }
 
-
+//Procura quem está em posse do livro. 
 empre* buscar_posse(empre* lista, int id_aluno, int id_livro){
     empre* current = lista;
 
@@ -37,6 +37,7 @@ empre* buscar_posse(empre* lista, int id_aluno, int id_livro){
     return NULL; // Não encontrado
 } 
 
+// Registra quem está em posse de um livro, e sua quantidade. 
 empre* registrar_posse(empre* lista, int id_aluno, int id_livro, int qtd) { 
     // Check 1: Se o aluno já tem o registro desse livro, apenas incrementa a quantidade
     empre* existente = buscar_posse(lista, id_aluno, id_livro);
@@ -64,7 +65,7 @@ empre* registrar_posse(empre* lista, int id_aluno, int id_livro, int qtd) {
     return lista; 
 }
 
-
+// Apaga a posse escolhida. 
 empre* remover_posse(empre *lista, int id_aluno, int id_livro, int qtd_devolvida) {
     if (lista == NULL) {
         return NULL; 
@@ -108,6 +109,26 @@ empre* remover_posse(empre *lista, int id_aluno, int id_livro, int qtd_devolvida
     return lista; 
 }
 
+// Mostra uma lista com todas as posses ativas. 
+void listar_posses(empre* head){
+
+    if(head == NULL){ // Verifica se a cabeça não está vazia. 
+        return; 
+    }
+
+    empre* current = head; 
+
+    while(current != NULL){
+        printf("O aluno com o id: %d, está em posse do livro: %d \n"); 
+        current = (*current).proximo; 
+    }
+
+}
+
+
+
+
+// Apaga a lista das posses. 
    empre* liberar_lista(empre *head) {
     empre* current = head; 
     empre* temp; 

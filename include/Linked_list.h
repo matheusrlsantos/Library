@@ -22,7 +22,7 @@ empre* registrar_posse(empre* lista, int id_aluno, int id_livro, int qtd);
 empre* remover_posse(empre *lista, int id_aluno, int id_livro, int qtd_devolvida); 
 
 // Mostra uma lista com todas as posses ativas. 
-empre* listar_posses(empre* lista); 
+void listar_posses(empre* lista); 
 
 // Apaga a lista das posses. 
 empre* liberar_lista(empre *head); 

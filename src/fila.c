@@ -8,6 +8,7 @@
 #include "fila.h"
 
 
+// Incializa a fila. 
 fila* criar_fila() {
     fila* f = (fila*) malloc(sizeof(fila));
     if (f == NULL) return NULL;
@@ -24,6 +25,7 @@ int fila_vazia(fila *f) {
 
 // Insere um documento no FIM da fila
 
+// Coordena a ordem da fila. 
 void enfileirar_desejo(fila* f, int id_aluno, int id_livro, int qtd) {
     if (f == NULL) return;
 
@@ -64,7 +66,7 @@ void desenfileirar_desejo(fila* f) {
     free(removido);
 }
 
-
+// Encontra o próximo da fila de reserva por um livro. 
 NoFila* buscar_proximo_por_livro(Fila* f, int id_livro) {
     if (f == NULL || fila_vazia(f)) return NULL;
 
@@ -79,7 +81,7 @@ NoFila* buscar_proximo_por_livro(Fila* f, int id_livro) {
 
     return NULL; // Ninguém esperando por este livro
 }
-
+// Mostra uma lista da fila de reserva. 
 void listar_fila(Fila* f) {
     printf("\n== FILA DE ESPERA / RESERVAS (INÍCIO -> FIM) ==\n");
 
@@ -98,7 +100,7 @@ void listar_fila(Fila* f) {
         count++;  
     }
 }
-
+// Cancela uma reserva. 
 NoFila cancelar_reserva(Fila *f) {
     NoFila copia_cancelada;
     // Inicializa com valores zerados para o caso de falha ou fila vazia
@@ -134,7 +136,7 @@ NoFila cancelar_reserva(Fila *f) {
     return copia_cancelada;
 }
 
-
+// Apaga toda a fila de reserva. 
 void liberar_fila(Fila *f) {
     if (f == NULL) return;
 
