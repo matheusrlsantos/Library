@@ -1,15 +1,15 @@
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <string.h> 
- 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "Linked_list.h"
 
 
 
-// Cria um novo nó para mais uma posse de livro. 
+// Cria um novo nó para mais uma posse de livro.
 empre* criar_no_posse(int id_aluno, int id_livro, int qtd){
-   
-    empre* novo = (empre*)malloc(sizeof(empre)); 
+
+    empre* novo = (empre*)malloc(sizeof(empre));
 
     if (novo == NULL) {
         return NULL; // Falha na alocação de memória
@@ -18,12 +18,12 @@ empre* criar_no_posse(int id_aluno, int id_livro, int qtd){
     novo->id_aluno = id_aluno;
     novo->id_livro = id_livro;
     novo->qtd_possuida = qtd;
-    novo->next = NULL; 
-    
-    return novo; 
+    novo->next = NULL;
+
+    return novo;
 }
 
-//Procura quem está em posse do livro. 
+//Procura quem está em posse do livro.
 empre* buscar_posse(empre* lista, int id_aluno, int id_livro){
     empre* current = lista;
 
@@ -35,10 +35,10 @@ empre* buscar_posse(empre* lista, int id_aluno, int id_livro){
     }
 
     return NULL; // Não encontrado
-} 
+}
 
-// Registra quem está em posse de um livro, e sua quantidade. 
-empre* registrar_posse(empre* lista, int id_aluno, int id_livro, int qtd) { 
+// Registra quem está em posse de um livro, e sua quantidade.
+empre* registrar_posse(empre* lista, int id_aluno, int id_livro, int qtd) {
     // Check 1: Se o aluno já tem o registro desse livro, apenas incrementa a quantidade
     empre* existente = buscar_posse(lista, id_aluno, id_livro);
     if (existente != NULL) {
@@ -52,23 +52,23 @@ empre* registrar_posse(empre* lista, int id_aluno, int id_livro, int qtd) {
 
     // Se a lista estiver vazia, o novo nó torna-se a cabeça da lista
     if (lista == NULL) {
-        return novo; 
+        return novo;
     }
 
     // Senão, insere no final da lista
-    empre* current = lista; 
+    empre* current = lista;
     while (current->next != NULL) {
-        current = current->next; 
+        current = current->next;
     }
-    current->next = novo; 
+    current->next = novo;
 
-    return lista; 
+    return lista;
 }
 
-// Apaga a posse escolhida. 
+// Apaga a posse escolhida.
 empre* remover_posse(empre *lista, int id_aluno, int id_livro, int qtd_devolvida) {
     if (lista == NULL) {
-        return NULL; 
+        return NULL;
     }
 
     empre* registro = buscar_posse(lista, id_aluno, id_livro);
@@ -83,60 +83,61 @@ empre* remover_posse(empre *lista, int id_aluno, int id_livro, int qtd_devolvida
     }
 
     // Caso 2: Devolução total (precisa remover o nó da lista)
-    
+
     // Se o nó a ser removido é a cabeça (head) da lista
     if (lista->id_aluno == id_aluno && lista->id_livro == id_livro) {
-        empre* temp = lista; 
-        lista = lista->next; 
-        free(temp); 
-        return lista; 
+        empre* temp = lista;
+        lista = lista->next;
+        free(temp);
+        return lista;
     }
 
     // Se o nó está no meio ou no fim da lista
     empre* prev = lista;
-    empre* current = lista->next; 
-    
+    empre* current = lista->next;
+
     while (current != NULL) {
-        if (current->id_aluno == id_aluno && current->id_livro == id_livro) { 
-            prev->next = current->next; 
+        if (current->id_aluno == id_aluno && current->id_livro == id_livro) {
+            prev->next = current->next;
             free(current);
-            break; 
+            break;
         }
-        prev = current; 
+        prev = current;
         current = current->next;
     }
 
-    return lista; 
+    return lista;
 }
 
-// Mostra uma lista com todas as posses ativas. 
+// Mostra uma lista com todas as posses ativas.
+// Mostra uma lista com todas as posses ativas.
 void listar_posses(empre* head){
-
-    if(head == NULL){ // Verifica se a cabeça não está vazia. 
-        return; 
+    if(head == NULL){
+        printf("Nenhuma posse ativa.\n");
+        return;
     }
 
-    empre* current = head; 
+    empre* current = head;
 
     while(current != NULL){
-        printf("O aluno com o id: %d, está em posse do livro: %d \n"); 
-        current = (*current).proximo; 
+        printf("Aluno ID: %d | Livro ID: %d | Quantidade: %d\n",
+               current->id_aluno, current->id_livro, current->qtd_possuida);
+        current = current->next;
     }
-
 }
 
 
 
 
-// Apaga a lista das posses. 
+// Apaga a lista das posses.
    empre* liberar_lista(empre *head) {
-    empre* current = head; 
-    empre* temp; 
+    empre* current = head;
+    empre* temp;
 
     while (current != NULL) {
-        temp = current->next; 
+        temp = current->next;
         free(current); // Removeu a chamada a free(current->data) já que não temos mais strings dinâmicas
-        current = temp; 
+        current = temp;
     }
     return NULL;
 }
