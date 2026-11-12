@@ -1,31 +1,25 @@
-
 #include <stdio.h>
-
 #include <stdlib.h>
-
-#include <string.h>
 
 #include "fila.h"
 
-
-// Incializa a fila. 
+// Incializa a fila.
 fila* criar_fila() {
     fila* f = (fila*) malloc(sizeof(fila));
     if (f == NULL) return NULL;
-    
+
     f->inicio = NULL;
     f->fim = NULL;
     return f;
 }
 
+// Verifica se a fila está vazia.
 int fila_vazia(fila *f) {
     if (f == NULL) return 1;
     return f->inicio == NULL;
 }
 
-// Insere um documento no FIM da fila
-
-// Coordena a ordem da fila. 
+// Coordena a ordem da fila: insere no FIM.
 void enfileirar_desejo(fila* f, int id_aluno, int id_livro, int qtd) {
     if (f == NULL) return;
 
@@ -49,8 +43,8 @@ void enfileirar_desejo(fila* f, int id_aluno, int id_livro, int qtd) {
         f->fim = novo;
     }
 }
-// Remove o documento do INICIO da fila e copia o nome para docRemovido
 
+// Remove a reserva do INICIO da fila.
 void desenfileirar_desejo(fila* f) {
     if (f == NULL || fila_vazia(f)) {
         return;
@@ -66,82 +60,82 @@ void desenfileirar_desejo(fila* f) {
     free(removido);
 }
 
-// Encontra o próximo da fila de reserva por um livro. 
-NoFila* buscar_proximo_por_livro(Fila* f, int id_livro) {
+// Encontra o próximo da fila de reserva por um livro.
+nofi* buscar_proximo_por_livro(fila* f, int id_livro) {
     if (f == NULL || fila_vazia(f)) return NULL;
 
     nofi *aux = f->inicio;
 
     while (aux != NULL) {
         if (aux->id_livro == id_livro) {
-            return aux; // Encontrou o próximo da fila aguardando esse livro!
+            return aux; // Primeiro da fila aguardando esse livro
         }
         aux = aux->next;
     }
 
     return NULL; // Ninguém esperando por este livro
 }
-// Mostra uma lista da fila de reserva. 
-void listar_fila(Fila* f) {
-    printf("\n== FILA DE ESPERA / RESERVAS (INÍCIO -> FIM) ==\n");
+
+// Mostra uma lista da fila de reserva.
+void listar_fila(fila* f) {
+    printf("\n== FILA DE ESPERA / RESERVAS (INICIO -> FIM) ==\n");
 
     if (f == NULL || fila_vazia(f)) {
-        printf("Fila de espera vazia.\n"); 
-        return; 
-    } 
+        printf("Fila de espera vazia.\n");
+        return;
+    }
 
-    NoFila *current = f->inicio; 
-    int count = 1; 
+    nofi *current = f->inicio;
+    int count = 1;
 
     while (current != NULL) {
-        printf("%d. Aluno ID: %d | Livro ID: %d | Qtd Desejada: %d\n", 
-               count, current->id_aluno, current->id_livro, current->qtd_dese); 
-        current = current->next; 
-        count++;  
+        printf("%d. Aluno ID: %d | Livro ID: %d | Qtd Desejada: %d\n",
+               count, current->id_aluno, current->id_livro, current->qtd_dese);
+        current = current->next;
+        count++;
     }
 }
-// Cancela uma reserva. 
-NoFila cancelar_reserva(Fila *f) {
-    NoFila copia_cancelada;
-    // Inicializa com valores zerados para o caso de falha ou fila vazia
-    copia_cancelada.id_aluno = 0;
-    copia_cancelada.id_livro = 0;
-    copia_cancelada.qtd_dese = 0;
-    copia_cancelada.next = NULL;
 
+// Cancela a reserva de um aluno por um livro (pode estar em qualquer posição).
+int cancelar_reserva(fila *f, int id_aluno, int id_livro) {
     if (f == NULL || fila_vazia(f)) {
-        printf("Aviso: Fila vazia ou inexistente. Nenhum cancelamento feito.\n");
-        return copia_cancelada;
+        return 0;
     }
 
-    // Guarda o nó que será removido do início
-    NoFila *temp = f->inicio;
+    nofi *atual = f->inicio;
+    nofi *anterior = NULL;
 
-    // Copia os dados antes de desalocar a memória
-    copia_cancelada.id_aluno = temp->id_aluno;
-    copia_cancelada.id_livro = temp->id_livro;
-    copia_cancelada.qtd_dese = temp->qtd_dese;
-
-    // Avanca o ponteiro do inicio para o proximo nó
-    f->inicio = f->inicio->next;
-
-    // Se o inicio virou NULL, a fila esvaziou por completo
-    if (f->inicio == NULL) {
-        f->fim = NULL;
+    // Procura o nó guardando sempre o anterior (igual à remoção da lista encadeada)
+    while (atual != NULL && !(atual->id_aluno == id_aluno && atual->id_livro == id_livro)) {
+        anterior = atual;
+        atual = atual->next;
     }
 
-    // Libera a memória do nó que foi cancelado
-    free(temp);
+    if (atual == NULL) {
+        return 0; // Reserva não encontrada
+    }
 
-    return copia_cancelada;
+    if (anterior == NULL) {
+        f->inicio = atual->next; // Removendo o primeiro da fila
+    } else {
+        anterior->next = atual->next; // "Pula" o nó removido
+    }
+
+    // Se removemos o último, o fim precisa ser atualizado
+    if (atual == f->fim) {
+        f->fim = anterior; // Se anterior for NULL, a fila ficou vazia
+    }
+
+    free(atual);
+    return 1;
 }
 
-// Apaga toda a fila de reserva. 
-void liberar_fila(Fila *f) {
+// Apaga toda a fila de reserva.
+void liberar_fila(fila *f) {
     if (f == NULL) return;
 
-    NoFila *current = f->inicio;
-    NoFila *temp;
+    nofi *current = f->inicio;
+    nofi *temp;
 
     while (current != NULL) {
         temp = current->next;
@@ -149,5 +143,5 @@ void liberar_fila(Fila *f) {
         current = temp;
     }
 
-    free(f); // Libera o ponteiro da estrutura de controle da Fila
+    free(f); // Libera a struct de controle da fila
 }
